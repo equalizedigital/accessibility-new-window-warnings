@@ -9,6 +9,8 @@
     var anww_link_tooltip = $('<div/>').css({
       position: 'absolute',
       background: 'white',
+      color: '#1e1e1e',
+      fontSize: '16px',
       border: '1px solid black',
       padding: '5px 10px',
       zIndex: 999,
