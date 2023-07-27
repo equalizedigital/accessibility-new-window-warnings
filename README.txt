@@ -1,5 +1,5 @@
 === Accessibility New Window Warnings ===
-Contributors: equalizedigital, alh0319, stevejonesdev, roadwarriorwp
+Contributors: equalizedigital, alh0319, stevejonesdev
 Tags: accessibility, accessible, wcag, ada, a11y, section 508, links, open new window, open new tab
 Requires at least: 5.0.0
 Tested up to: 6.2.2
