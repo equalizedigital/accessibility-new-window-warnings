@@ -65,7 +65,7 @@
       // position and show link_tooltip on focus
       $(this).on({
         focusin: function () {
-          var position = $(this).position();
+          var position = $(this).offset();
           anww_link_tooltip.css({
                 top: position.top + $(this).outerHeight() + 'px',
                 left: position.left + 'px'
