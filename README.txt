@@ -69,6 +69,11 @@ This plugin can help to make your website *more accessible* by fixing a common i
 
 == Changelog ==
 
+= 1.0.3 =
+* Added - class .anww-tooltip class to the tooltip
+* Added - inline styles to tooltip
+* Updated - css clean up and improvements
+
 = 1.0.2 =
 * Updated - on focus positioning to use offset
 
