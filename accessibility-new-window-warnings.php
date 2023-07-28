@@ -17,7 +17,7 @@
  * @package           ANWW
  */
 
-define( 'ANWW_VERSION', '1.0.1' );
+define( 'ANWW_VERSION', '1.0.2' );
 define( 'ANWW_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'ANWW_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
