@@ -15,9 +15,9 @@
       fontSize: '16px',
       border: '1px solid black',
       padding: '5px 10px',
-      zIndex: 999,
+      zIndex: 9999,
       display: 'none'
-    }).appendTo('body');
+    }).addClass('anww-tooltip').appendTo('body');
 
     /**
      * loop through each link with a target of _blank

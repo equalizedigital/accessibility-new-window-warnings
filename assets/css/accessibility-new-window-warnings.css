@@ -10,24 +10,22 @@
   font-display: block;
 }
 
-[class^="anww-"], [class*=" anww-"] {
-  /* use !important to prevent issues with browser extensions that change fonts */
-  font-family: 'anww' !important;
-  speak: never;
-  font-style: normal;
-  font-weight: normal;
-  font-variant: normal;
-  text-transform: none;
-  line-height: 1;
+:root {
+  --font-base: 'anww', sans-serif;
+  --icon-size: 0.75em;
+  --icon-margin: 0.1875em;
+}
 
-  /* Better Font Rendering =========== */
+.anww-external-link-icon {
+  font: normal normal normal 1em var(--font-base) !important;
+  speak: never;
+  text-transform: none;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 .anww-external-link-icon:before {
   content: "\e900";
-  font-size: 12px;
-  margin-left: 3px;
-  font-style: normal;
+  font-size: var(--icon-size);
+  margin-left: var(--icon-margin);
 }
