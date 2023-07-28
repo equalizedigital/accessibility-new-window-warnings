@@ -26,9 +26,9 @@
 
       // add icon to link
       if($(':header',this).length){
-        $(':header',this).append(' <i class="anww-external-link-icon" aria-hidden="true"></i>');
+        $(':header',this).append('<i class="anww-external-link-icon" aria-hidden="true"></i>');
       }else{
-        $(this).append(' <i class="anww-external-link-icon" aria-hidden="true"></i>');
+        $(this).append('<i class="anww-external-link-icon" aria-hidden="true"></i>');
       }
       
       // get aria label text

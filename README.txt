@@ -69,6 +69,9 @@ This plugin can help to make your website *more accessible* by fixing a common i
 
 == Changelog ==
 
+= 1.0.4 =
+* Updated - space between icon and link text moved to the icon pseudo class
+
 = 1.0.3 =
 * Added - class .anww-tooltip class to the tooltip
 * Added - inline styles to tooltip

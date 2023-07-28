@@ -13,7 +13,6 @@
 :root {
   --font-base: 'anww', sans-serif;
   --icon-size: 0.75em;
-  --icon-margin: 0.1875em;
 }
 
 .anww-external-link-icon {
@@ -25,7 +24,6 @@
 }
 
 .anww-external-link-icon:before {
-  content: "\e900";
+  content: " \e900";
   font-size: var(--icon-size);
-  margin-left: var(--icon-margin);
 }
