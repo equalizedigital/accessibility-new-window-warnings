@@ -26,6 +26,18 @@ if ( ! class_exists( 'ANWW' ) ) {
 	 * for making links that open in a new window accessible by adding a warning.
 	 */
 	class ANWW {
+
+		private static $instance;
+
+		/**
+		 * Get the singleton instance of the class.
+		 */
+		public static function getInstance() {
+			if ( null === static::$instance ) {
+				static::$instance = new static();
+			}
+			return static::$instance;
+		}
 		
 		/**
 		 * ANWW constructor.
@@ -57,11 +69,11 @@ if ( ! class_exists( 'ANWW' ) ) {
 		 * JS file is located at the plugin's assets directory.
 		 */
 		public function enqueue_scripts() {
-			wp_enqueue_script( 'anww', ANWW_PLUGIN_URL . 'assets/js/accessibility-new-window-warnings-min.js', array( 'jquery' ), ANWW_VERSION, false );
+			wp_enqueue_script( 'anww', ANWW_PLUGIN_URL . 'assets/js/accessibility-new-window-warnings-min.js', array( 'jquery' ), ANWW_VERSION, true );
 		}
 		
 	}
 	
 	// instantiate the plugin class.
-	$anww = new ANWW();
+	ANWW::getInstance();
 }
