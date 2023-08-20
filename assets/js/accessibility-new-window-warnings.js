@@ -43,9 +43,9 @@
       // add warning label
       if(anww_label){
         anww_label = anww_label.trimEnd();
-        anww_label += ", opens a new window";
+        anww_label += ", " + anww_localized.opens_a_new_window;
       }else{
-        anww_label += "opens a new window";
+        anww_label += anww_localized.opens_a_new_window;
       }
 
       // add aria-label to link 
@@ -59,7 +59,7 @@
         });
       })
       .hover(function(){
-        anww_link_tooltip.show().html('opens a new window');
+        anww_link_tooltip.show().html(anww_localized.opens_a_new_window);
       }, function(){
         anww_link_tooltip.hide();
       });
@@ -73,7 +73,7 @@
                 left: position.left + 'px'
             });
 
-          anww_link_tooltip.show().html('opens a new window');
+          anww_link_tooltip.show().html(anww_localized.opens_a_new_window);
         },
         focusout: function () {
             anww_link_tooltip.hide();

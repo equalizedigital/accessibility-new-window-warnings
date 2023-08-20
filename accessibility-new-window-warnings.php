@@ -3,7 +3,7 @@
  * Plugin Name: Accessibility New Window Warnings
  * Plugin URI:  https://a11ychecker.com
  * Description: Make links that open in a new window accessible by adding a warning.
- * Version:     1.0.4
+ * Version:     1.0.5
  * Author:      Equalize Digital
  * Author URI:  https://equalizedigital.com
  * License:     GPL-2.0+
@@ -54,6 +54,7 @@ if ( ! class_exists( 'ANWW' ) ) {
 		public function setup_actions() {
 			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles' ) );
+			add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
 		}
 
 		/**
@@ -70,6 +71,19 @@ if ( ! class_exists( 'ANWW' ) ) {
 		 */
 		public function enqueue_scripts() {
 			wp_enqueue_script( 'anww', ANWW_PLUGIN_URL . 'assets/js/accessibility-new-window-warnings-min.js', array( 'jquery' ), ANWW_VERSION, true );
+
+			// Localize the script with new data.
+			$translation_array = array(
+				'opens_a_new_window' => __( 'opens a new window', 'anww' ),
+			);
+			wp_localize_script( 'anww', 'anww_localized', $translation_array );
+		}
+
+		/**
+		 * Loads the plugin's textdomain.
+		 */
+		public function load_textdomain() {
+			load_plugin_textdomain( 'anww', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 		}
 		
 	}
