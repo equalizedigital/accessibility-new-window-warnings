@@ -1,20 +1,17 @@
 <?php
 /**
  * Plugin Name: Accessibility New Window Warnings
+ * Plugin URI:  https://a11ychecker.com
+ * Description: Make links that open in a new window accessible by adding a warning.
+ * Version:     1.0.4
+ * Author:      Equalize Digital
+ * Author URI:  https://equalizedigital.com
+ * License:     GPL-2.0+
+ * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
+ * Text Domain: anww
+ * Domain Path: /languages
  * 
- * @wordpress-plugin
- * Plugin Name:       Accessibility New Window Warnings
- * Plugin URI:        https://a11ychecker.com
- * Description:       Make links that open in a new window accessible by adding a warning.
- * Version:           1.0.4
- * Author:            Equalize Digital
- * Author URI:        https://equalizedigital.com
- * License:           GPL-2.0+
- * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
- * Text Domain:       anww
- * Domain Path:       /languages
- * 
- * @package           ANWW
+ * @package ANWW
  */
 
 define( 'ANWW_VERSION', '1.0.4' );
