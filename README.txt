@@ -67,7 +67,16 @@ This plugin can help to make your website *more accessible* by fixing a common i
 4. Shows the new window icon added to a button created with the block editor.
 5. Shows the new window icons being added into social media sharing buttons from a third-party plugin.
 
+== Localization ==
+The Accessibility New Window Warnings plugin is ready for localization. We have added a Spanish translation and are open to more translations!
+
+If you would like to contribute a translation to this plugin, please [contact us](https://equalizedigital.com/contact/) or [fork the repository on GitHub](https://github.com/equalizedigital/accessibility-new-window-warnings).
+
 == Changelog ==
+
+= 1.0.5 =
+* Introduced localization support.
+* Added Spanish translation.
 
 = 1.0.4 =
 * Updated - space between icon and link text moved to the icon pseudo class
