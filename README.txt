@@ -75,8 +75,8 @@ If you would like to contribute a translation to this plugin, please [contact us
 == Changelog ==
 
 = 1.0.5 =
-* Introduced localization support.
-* Added Spanish translation.
+* Added - localization support.
+* Added - Spanish translation.
 
 = 1.0.4 =
 * Updated - space between icon and link text moved to the icon pseudo class
