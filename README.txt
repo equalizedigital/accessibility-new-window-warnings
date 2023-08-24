@@ -3,7 +3,7 @@ Contributors: equalizedigital, alh0319, stevejonesdev
 Tags: accessibility, accessible, wcag, ada, a11y, section 508, links, open new window, open new tab
 Requires at least: 5.0.0
 Tested up to: 6.2.2
-Stable tag: trunk
+Stable tag: 1.0.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 

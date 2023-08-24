@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: Accessibility New Window Warnings 1.0.4\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/accessibility-new-window-warnings\n"
 "POT-Creation-Date: 2023-08-20T19:47:47+00:00\n"
-"PO-Revision-Date: 2023-08-20 16:12-0400\n"
+"PO-Revision-Date: 2023-08-23 11:17-0400\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: es_ES\n"
@@ -17,7 +17,7 @@ msgstr ""
 
 #. Plugin Name of the plugin
 msgid "Accessibility New Window Warnings"
-msgstr "Advertencias de Accesibilidad para Ventanas Nuevas"
+msgstr "Advertencias de Accesibilidad para Nuevas Pestañas"
 
 #. Plugin URI of the plugin
 msgid "https://a11ychecker.com"
@@ -29,7 +29,7 @@ msgstr "Haga que los enlaces que se abren en una nueva ventana sean accesibles a
 
 #. Author of the plugin
 msgid "Equalize Digital"
-msgstr "Igualar Digital"
+msgstr "Equalize Digital"
 
 #. Author URI of the plugin
 msgid "https://equalizedigital.com"
@@ -37,4 +37,4 @@ msgstr "https://equalizedigital.com"
 
 #: accessibility-new-window-warnings.php:77
 msgid "opens a new window"
-msgstr "abre una nueva ventana"
+msgstr "abre una nueva pestaña"
