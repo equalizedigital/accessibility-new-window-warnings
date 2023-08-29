@@ -3,18 +3,17 @@
  * Plugin Name: Accessibility New Window Warnings
  * Plugin URI:  https://a11ychecker.com
  * Description: Make links that open in a new window accessible by adding a warning.
- * Version:     1.0.6
+ * Version:     1.0.7
  * Author:      Equalize Digital
  * Author URI:  https://equalizedigital.com
  * License:     GPL-2.0+
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
- * Text Domain: anww
- * Domain Path: /languages
+ * Text Domain: accessibility-new-window-warnings
  * 
  * @package ANWW
  */
 
-define( 'ANWW_VERSION', '1.0.6' );
+define( 'ANWW_VERSION', '1.0.7' );
 define( 'ANWW_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'ANWW_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
@@ -27,12 +26,17 @@ if ( ! class_exists( 'ANWW' ) ) {
 	 */
 	class ANWW {
 
+		/**
+		 * Singleton instance of the class.
+		 *
+		 * @var ANWW
+		 */
 		private static $instance;
 
 		/**
 		 * Get the singleton instance of the class.
 		 */
-		public static function getInstance() {
+		public static function get_instance() {
 			if ( null === static::$instance ) {
 				static::$instance = new static();
 			}
@@ -54,7 +58,6 @@ if ( ! class_exists( 'ANWW' ) ) {
 		public function setup_actions() {
 			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles' ) );
-			add_action( 'plugins_loaded', array( $this, 'load_textdomain' ) );
 		}
 
 		/**
@@ -74,20 +77,12 @@ if ( ! class_exists( 'ANWW' ) ) {
 
 			// Localize the script with new data.
 			$translation_array = array(
-				'opens_a_new_window' => __( 'opens a new window', 'anww' ),
+				'opens_a_new_window' => __( 'opens a new window', 'accessibility-new-window-warnings' ),
 			);
 			wp_localize_script( 'anww', 'anww_localized', $translation_array );
 		}
-
-		/**
-		 * Loads the plugin's textdomain.
-		 */
-		public function load_textdomain() {
-			load_plugin_textdomain( 'anww', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
-		}
-		
 	}
 	
 	// instantiate the plugin class.
-	ANWW::getInstance();
+	ANWW::get_instance();
 }

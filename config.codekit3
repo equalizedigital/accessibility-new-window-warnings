@@ -105,30 +105,6 @@
       "sC" : 3,
       "tS" : 0
     },
-    "\/languages\/anww-es_ES.mo" : {
-      "cB" : 0,
-      "ft" : 8192,
-      "hM" : 0,
-      "oA" : 0,
-      "oAP" : "\/languages\/anww-es_ES.mo",
-      "oF" : 0
-    },
-    "\/languages\/anww-es_ES.po" : {
-      "cB" : 0,
-      "ft" : 8192,
-      "hM" : 0,
-      "oA" : 0,
-      "oAP" : "\/languages\/anww-es_ES.po",
-      "oF" : 0
-    },
-    "\/languages\/anww.pot" : {
-      "cB" : 0,
-      "ft" : 8192,
-      "hM" : 0,
-      "oA" : 0,
-      "oAP" : "\/languages\/anww.pot",
-      "oF" : 0
-    },
     "\/phpcs.xml" : {
       "cB" : 0,
       "ft" : 8192,
