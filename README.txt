@@ -3,7 +3,7 @@ Contributors: equalizedigital, alh0319, stevejonesdev
 Tags: accessibility, accessible, wcag, ada, a11y, section 508, links, open new window, open new tab
 Requires at least: 5.0.0
 Tested up to: 6.3.1
-Stable tag: 1.0.7
+Stable tag: 1.0.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -73,6 +73,9 @@ The Accessibility New Window Warnings plugin is ready for localization. We have 
 If you would like to contribute a translation to this plugin, please [contact us](https://equalizedigital.com/contact/) or [fork the repository on GitHub](https://github.com/equalizedigital/accessibility-new-window-warnings).
 
 == Changelog ==
+
+= 1.0.8 =
+* Added - support for FacetWP dynamic content
 
 = 1.0.7 =
 * Updated - textdomain to plugin slug
