@@ -1,0 +1,69 @@
+{
+	"name": "equalizedigital/accessibility-new-window-warnings",
+	"description": "Make links that open in a new window accessible by adding a warning.",
+	"keywords": [
+		"accessibility",
+		"accessible",
+		"wcag"
+	],
+	"homepage": "https://wordpress.org/plugins/accessibility-new-window-warnings/",
+	"license": "GPL-3.0-or-later",
+	"authors": [
+		{
+			"name": "Equalize Digital",
+			"homepage": "https://equalizedigital.com"
+		}
+	],
+	"type": "wordpress-plugin",
+	"support": {
+		"issues": "https://github.com/equalizedigital/accessibility-new-window-warnings/issues",
+		"forum": "https://wordpress.org/support/plugin/accessibility-new-window-warnings/",
+		"wiki": "https://github.com/equalizedigital/accessibility-new-window-warnings/wiki",
+		"source": "https://github.com/equalizedigital/accessibility-new-window-warnings"
+	},
+	"require": {
+		"php": ">=7.4",
+		"composer/installers": "^1.12.0"
+	},
+	"require-dev": {
+		"yoast/yoastcs": "^2.2.1",
+		"yoast/wp-test-utils": "^1.1.1"
+	},
+	"config": {
+		"platform": {
+			"php": "7.4"
+		},
+		"allow-plugins": {
+			"dealerdirect/phpcodesniffer-composer-installer": true,
+			"composer/installers": true
+		}
+	},
+	"minimum-stability": "dev",
+	"prefer-stable": true,
+	"autoload": {
+		"classmap": [
+		]
+	},
+	"autoload-dev": {
+		"classmap": [
+		]
+	},
+	"scripts": {
+		"lint": [
+			"@php ./vendor/php-parallel-lint/php-parallel-lint/parallel-lint . -e php --show-deprecated --exclude vendor --exclude node_modules --exclude .git"
+		],
+		"config-yoastcs" : [
+			"Dealerdirect\\Composer\\Plugin\\Installers\\PHPCodeSniffer\\Plugin::run",
+			"@php ./vendor/squizlabs/php_codesniffer/bin/phpcs --config-set default_standard Yoast"
+		],
+		"check-cs": [
+			"@php ./vendor/squizlabs/php_codesniffer/bin/phpcs --runtime-set testVersion 7.4-"
+		],
+		"fix-cs": [
+			"@php ./vendor/squizlabs/php_codesniffer/bin/phpcbf"
+		],
+		"test": [
+			"@php ./vendor/phpunit/phpunit/phpunit"
+		]
+	}
+}
