@@ -7,6 +7,8 @@
 
 namespace EqualizeDigital\ANWW\Inc;
 
+use EqualizeDigital\ANWW\Admin\Admin;
+
 /**
  * AccessibilityNewWindowWarnings Class
  * 
@@ -21,6 +23,10 @@ class AccessibilityNewWindowWarnings {
 	 */
 	public function __construct() {
 		$this->setup_actions();
+
+		if ( \is_admin() ) {
+			new Admin();
+		}
 	}
 
 	/**
