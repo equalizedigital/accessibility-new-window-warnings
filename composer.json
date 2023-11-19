@@ -42,6 +42,8 @@
 	"prefer-stable": true,
 	"autoload": {
 		"classmap": [
+			"admin/",
+			"inc/"
 		]
 	},
 	"autoload-dev": {
