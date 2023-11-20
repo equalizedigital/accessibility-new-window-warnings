@@ -1,7 +1,7 @@
-<?php 
+<?php // phpcs:ignore WordPress.Files.FileName.NotHyphenatedLowercase // phpcs:ignore WordPress.Files.FileName.InvalidClassFileName
 /**
  * Class file for the Accessibility New Window Warnings plugin.
- * 
+ *
  * @package ANWW
  */
 
