@@ -1,4 +1,4 @@
-<?php // phpcs:ignore WordPress.Files.FileName.NotHyphenatedLowercase // phpcs:ignore WordPress.Files.FileName.InvalidClassFileName
+<?php
 /**
  * Class file for the Accessibility New Window Warnings plugin.
  *
@@ -15,7 +15,7 @@ use EqualizeDigital\ANWW\Admin\Admin;
  * This class sets up actions for enqueuing styles and scripts
  * for making links that open in a new window accessible by adding a warning.
  */
-class AccessibilityNewWindowWarnings {
+class Accessibility_New_Window_Warnings {
 
 	/**
 	 * ANWW constructor.

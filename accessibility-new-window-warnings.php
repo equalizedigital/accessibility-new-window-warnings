@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
-use EqualizeDigital\ANWW\Inc\AccessibilityNewWindowWarnings;
+use EqualizeDigital\ANWW\Inc\Accessibility_New_Window_Warnings;
 
 define( 'ANWW_VERSION', '1.0.8' );
 define( 'ANWW_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
@@ -28,6 +28,6 @@ if ( file_exists( ANWW_PLUGIN_DIR . 'vendor/autoload.php' ) ) {
 	require ANWW_PLUGIN_DIR . 'vendor/autoload.php';
 }
 
-if ( class_exists( 'EqualizeDigital\ANWW\Inc\AccessibilityNewWindowWarnings' ) ) {
-	new AccessibilityNewWindowWarnings();
+if ( class_exists( 'EqualizeDigital\ANWW\Inc\Accessibility_New_Window_Warnings' ) ) {
+	new Accessibility_New_Window_Warnings();
 }
