@@ -22,10 +22,10 @@ class Accessibility_New_Window_Warnings {
 	 * Sets up hooks for enqueuing styles and scripts
 	 */
 	public function __construct() {
-		$this->setup_actions();
-
 		if ( \is_admin() ) {
 			new Admin();
+		} else {
+			$this->setup_actions();
 		}
 	}
 
