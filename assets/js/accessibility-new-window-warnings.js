@@ -1,7 +1,6 @@
 /* global anww_localized */
 
 (function () {
-	"use strict";
 
 	let anwwLinkTooltip;
 	let tooltipTimeout;
@@ -97,11 +96,7 @@
 		icon.classList.add("anww-external-link-icon");
 		icon.setAttribute("aria-hidden", "true");
 
-		if (link.querySelector(":scope > h1, :scope > h2, :scope > h3, :scope > h4, :scope > h5, :scope > h6")) {
-			link.appendChild(icon);
-		} else {
-			link.appendChild(icon);
-		}
+		link.appendChild(icon);
 	};
 
 	/**
