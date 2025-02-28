@@ -1,129 +1,193 @@
-(function ($) {
-	"use strict";
+/* global anww_localized */
 
-	var anww_link_tooltip;
+(function () {
 
-	function initializeTooltip() {
-		anww_link_tooltip = $('<div/>').css({
-			position: 'absolute',
-			background: 'white',
-			color: '#1e1e1e',
-			fontSize: '16px',
-			border: '1px solid black',
-			padding: '5px 10px',
+	let anwwLinkTooltip;
+	let tooltipTimeout;
+
+	/**
+	 * Initializes the tooltip element and event listeners.
+	 */
+	const initializeTooltip = () => {
+		anwwLinkTooltip = document.createElement("div");
+		anwwLinkTooltip.setAttribute("role", "tooltip");
+		anwwLinkTooltip.classList.add("anww-tooltip");
+		Object.assign(anwwLinkTooltip.style, {
+			position: "absolute",
+			background: "white",
+			color: "#1e1e1e",
+			fontSize: "16px",
+			border: "1px solid black",
+			padding: "5px 10px",
 			zIndex: 9999,
-			display: 'none'
-		}).addClass('anww-tooltip').appendTo('body');
-	}
+			display: "none",
+			pointerEvents: "auto",
+			boxShadow: "0px 4px 6px rgba(0,0,0,0.1)",
+			maxWidth: "200px",
+			whiteSpace: "nowrap"
+		});
+		document.body.appendChild(anwwLinkTooltip);
 
-	function processLinks() {
-		var anww_label = '';
+		// Hide tooltip when clicking outside or pressing Escape
+		document.addEventListener("click", (event) => {
+			if (!event.target.closest(".anww-tooltip, a[target='_blank']")) {
+				hideTooltip();
+			}
+		});
 
+		document.addEventListener("keydown", (event) => {
+			if (event.key === "Escape") {
+				hideTooltip();
+			}
+		});
+
+		// Keep tooltip visible when hovered
+		anwwLinkTooltip.addEventListener("mouseenter", () => {
+			clearTimeout(tooltipTimeout);
+		});
+
+		anwwLinkTooltip.addEventListener("mouseleave", () => {
+			hideTooltip();
+		});
+	};
+
+	/**
+	 * Processes all anchor links and applies necessary accessibility enhancements.
+	 */
+	const processLinks = () => {
 		// Remove previously appended icons to avoid duplication
-		$(".anww-external-link-icon").remove();
+		document.querySelectorAll(".anww-external-link-icon").forEach(icon => icon.remove());
 
-		$("a").each(function () {
-			var hasIcon = false;
-			var onclickAttr = $(this).attr("onclick");
+		document.querySelectorAll("a").forEach((link) => {
+			let hasIcon = false;
+			const onclickAttr = link.getAttribute("onclick");
 
 			// Check if the link opens a new window using target="_blank"
-			if ($(this).attr("target") === "_blank") {
-				addExternalLinkIcon($(this));
-				updateAriaLabel($(this));
-				addTooltipHandlers($(this));
+			if (link.getAttribute("target") === "_blank") {
+				addExternalLinkIcon(link);
+				updateAriaLabel(link);
+				addTooltipHandlers(link);
 				hasIcon = true;
 			}
 
 			// Check if the link uses window.open in the onclick attribute
 			if (onclickAttr && onclickAttr.includes("window.open")) {
-				// Extract window.open arguments
-				var windowOpenMatch = onclickAttr.match(/window\.open\([^,]+,\s*['"]([^'"]+)['"]/);
-				var targetWindow = windowOpenMatch ? windowOpenMatch[1] : '';
+				const windowOpenMatch = onclickAttr.match(/window\.open\([^,]+,\s*['"]([^'"]+)['"]/);
+				const targetWindow = windowOpenMatch ? windowOpenMatch[1] : "";
 
-				// Ensure window.open is opening a new window (i.e., '_blank')
-				if (targetWindow === '_blank' || targetWindow === '') {
-					addExternalLinkIcon($(this));
-					updateAriaLabel($(this));
-					addTooltipHandlers($(this));
+				if (targetWindow === "_blank" || targetWindow === "") {
+					addExternalLinkIcon(link);
+					updateAriaLabel(link);
+					addTooltipHandlers(link);
 					hasIcon = true;
 				}
 			}
 
-			// If no external link behavior detected, do not proceed with tooltip
-			if (!hasIcon) {
-				return;
-			}
-
-			function addExternalLinkIcon(link) {
-				// Add icon to link
-				if ($(':header', link).length) {
-					$(':header', link).append('<i class="anww-external-link-icon" aria-hidden="true"></i>');
-				} else {
-					link.append('<i class="anww-external-link-icon" aria-hidden="true"></i>');
-				}
-			}
-
-			function updateAriaLabel(link) {
-				// Get aria label text
-				if (link.attr("aria-label")) {
-					anww_label = link.attr("aria-label");
-				} else if ($('img', link).length) {
-					anww_label = link.find("img").attr("alt");
-				} else if (link.text()) {
-					anww_label = link.text();
-				}
-
-				// Add warning label
-				if (anww_label) {
-					anww_label = anww_label.trimEnd();
-					anww_label += ", " + anww_localized.opens_a_new_window;
-				} else {
-					anww_label += anww_localized.opens_a_new_window;
-				}
-
-				// Add aria-label to link 
-				link.attr("aria-label", anww_label);
-			}
-
-			function addTooltipHandlers(link) {
-				// Position and show link_tooltip on hover
-				link.mousemove(function (e) {
-					anww_link_tooltip.css({
-						top: e.pageY + 10 + 'px',
-						left: e.pageX + 10 + 'px'
-					});
-				})
-				.hover(function () {
-					anww_link_tooltip.show().html(anww_localized.opens_a_new_window);
-				}, function () {
-					anww_link_tooltip.hide();
-				});
-
-				// Position and show link_tooltip on focus
-				link.on({
-					focusin: function () {
-						var position = link.offset();
-						anww_link_tooltip.css({
-							top: position.top + link.outerHeight() + 'px',
-							left: position.left + 'px'
-						});
-
-						anww_link_tooltip.show().html(anww_localized.opens_a_new_window);
-					},
-					focusout: function () {
-						anww_link_tooltip.hide();
-					}
-				});
-			}
+			if (!hasIcon) return;
 		});
-	}
+	};
 
-	$(window).on('load', function () {
+	/**
+	 * Adds an external link icon to the specified link.
+	 * @param {HTMLElement} link - The link element to modify.
+	 */
+	const addExternalLinkIcon = (link) => {
+		const icon = document.createElement("i");
+		icon.classList.add("anww-external-link-icon");
+		icon.setAttribute("aria-hidden", "true");
+
+		link.appendChild(icon);
+	};
+
+	/**
+	 * Updates the aria-label of the specified link.
+	 * @param {HTMLElement} link - The link element to modify.
+	 */
+	const updateAriaLabel = (link) => {
+		let anwwLabel = "";
+
+		if (link.hasAttribute("aria-label")) {
+			anwwLabel = link.getAttribute("aria-label");
+		} else if (link.querySelector("img")) {
+			anwwLabel = link.querySelector("img").getAttribute("alt");
+		} else if (link.textContent) {
+			anwwLabel = link.textContent.trim();
+		}
+
+		anwwLabel = anwwLabel ? `${anwwLabel}, ${anww_localized.opens_a_new_window}` : anww_localized.opens_a_new_window;
+		link.setAttribute("aria-label", anwwLabel);
+	};
+
+	/**
+	 * Adds tooltip event handlers to the specified link.
+	 * @param {HTMLElement} link - The link element to modify.
+	 */
+	const addTooltipHandlers = (link) => {
+		link.addEventListener("mouseenter", (e) => {
+			showTooltip(link, e.pageX, e.pageY);
+		});
+
+		link.addEventListener("focusin", (e) => {
+			const rect = link.getBoundingClientRect();
+			showTooltip(link, rect.left + window.scrollX, rect.top + rect.height + window.scrollY);
+		});
+
+		link.addEventListener("mouseleave", hideTooltipWithDelay);
+		link.addEventListener("focusout", hideTooltipWithDelay);
+	};
+
+	/**
+	 * Displays the tooltip near the specified coordinates, adjusting if it overflows.
+	 * @param {HTMLElement} link - The link triggering the tooltip.
+	 * @param {number} x - The x-coordinate.
+	 * @param {number} y - The y-coordinate.
+	 */
+	const showTooltip = (link, x, y) => {
+		clearTimeout(tooltipTimeout);
+
+		anwwLinkTooltip.textContent = anww_localized.opens_a_new_window;
+		anwwLinkTooltip.style.display = "block";
+
+		const tooltipWidth = anwwLinkTooltip.offsetWidth;
+		const tooltipHeight = anwwLinkTooltip.offsetHeight;
+		const windowWidth = window.innerWidth;
+		const windowHeight = window.innerHeight;
+		const scrollTop = window.scrollY;
+
+		// Adjust X if the tooltip overflows the right edge
+		if (x + tooltipWidth + 10 > windowWidth) {
+			x -= (tooltipWidth + 20);
+		}
+
+		// Adjust Y if the tooltip overflows the bottom edge
+		if (y + tooltipHeight + 10 > windowHeight + scrollTop) {
+			y -= (tooltipHeight + 20);
+		}
+
+		anwwLinkTooltip.style.top = `${y + 10}px`;
+		anwwLinkTooltip.style.left = `${x + 10}px`;
+	};
+
+	/**
+	 * Delays hiding the tooltip to prevent flickering.
+	 */
+	const hideTooltipWithDelay = () => {
+		tooltipTimeout = setTimeout(hideTooltip, 300);
+	};
+
+	/**
+	 * Hides the tooltip.
+	 */
+	const hideTooltip = () => {
+		anwwLinkTooltip.style.display = "none";
+	};
+
+	// Initialize tooltip and process links on page load
+	window.addEventListener("load", () => {
 		initializeTooltip();
 		processLinks();
 	});
 
 	// Support for FacetWP: Re-run the processLinks function when FacetWP refreshes the page
-	$(document).on('facetwp-loaded', processLinks);
-
-})(jQuery);
+	document.addEventListener("facetwp-loaded", processLinks);
+})();
