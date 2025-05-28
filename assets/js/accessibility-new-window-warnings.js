@@ -100,7 +100,7 @@
     const elementorButtonContent = link.querySelector('.elementor-button-content-wrapper');
 		if ( elementorButtonContent ) {
       icon.classList.add("elementor-button-link-content");
-      elementorButtonContent.insertAdjacentHTML("beforeend", icon);
+      elementorButtonContent.insertAdjacentElement("beforeend", icon);
       return;
     }
 
