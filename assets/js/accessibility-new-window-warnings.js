@@ -96,6 +96,13 @@
 		icon.classList.add("anww-external-link-icon");
 		icon.setAttribute("aria-hidden", "true");
 
+    // For Elementor buttons, insert the icon into the button content wrapper.
+    const elementorButtonContent = link.querySelector('.elementor-button-content-wrapper');
+		if ( elementorButtonContent ) {
+      elementorButtonContent.insertAdjacentHTML('beforeend', '<i class="anww-external-link-icon elementor-button-link-content" aria-hidden="true"></i>');
+      return;
+    }
+
 		link.appendChild(icon);
 	};
 
