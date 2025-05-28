@@ -59,11 +59,6 @@
 		document.querySelectorAll(".anww-external-link-icon").forEach(icon => icon.remove());
 
 		document.querySelectorAll("a:not([data-nww-processed])").forEach((link) => {
-			// skip any links that have already been processed.
-      if (link.hasAttribute("nww-processed")) {
-        return;
-      }
-
       let hasIcon = false;
 			const onclickAttr = link.getAttribute("onclick");
 
