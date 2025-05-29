@@ -67,6 +67,7 @@
 				addExternalLinkIcon(link);
 				updateAriaLabel(link);
 				addTooltipHandlers(link);
+        link.setAttribute("data-nww-processed", "true");
 				hasIcon = true;
 			}
 
