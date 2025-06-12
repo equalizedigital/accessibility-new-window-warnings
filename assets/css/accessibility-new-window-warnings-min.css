@@ -27,3 +27,7 @@
   content: " \e900";
   font-size: var(--icon-size);
 }
+
+.anww-external-link-icon.elementor-button-link-content:before {
+  vertical-align: middle;
+}
