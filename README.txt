@@ -2,8 +2,8 @@
 Contributors: equalizedigital, alh0319, stevejonesdev
 Tags: accessibility, accessible, wcag, ada, a11y, section 508, links, open new window, open new tab
 Requires at least: 6.4.0
-Tested up to: 6.7.2
-Stable tag: 1.1.0
+Tested up to: 6.8.0
+Stable tag: 1.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
