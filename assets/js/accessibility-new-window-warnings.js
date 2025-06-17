@@ -58,8 +58,8 @@
 		// Remove previously appended icons to avoid duplication
 		document.querySelectorAll(".anww-external-link-icon").forEach(icon => icon.remove());
 
-		document.querySelectorAll("a").forEach((link) => {
-			let hasIcon = false;
+		document.querySelectorAll("a:not([data-nww-processed])").forEach((link) => {
+      let hasIcon = false;
 			const onclickAttr = link.getAttribute("onclick");
 
 			// Check if the link opens a new window using target="_blank"
@@ -67,6 +67,7 @@
 				addExternalLinkIcon(link);
 				updateAriaLabel(link);
 				addTooltipHandlers(link);
+				link.setAttribute("data-nww-processed", "true");
 				hasIcon = true;
 			}
 
@@ -79,6 +80,7 @@
 					addExternalLinkIcon(link);
 					updateAriaLabel(link);
 					addTooltipHandlers(link);
+          link.setAttribute("data-nww-processed", "true");
 					hasIcon = true;
 				}
 			}
@@ -95,6 +97,14 @@
 		const icon = document.createElement("i");
 		icon.classList.add("anww-external-link-icon");
 		icon.setAttribute("aria-hidden", "true");
+
+    // For Elementor buttons, insert the icon into the button content wrapper.
+    const elementorButtonContent = link.querySelector('.elementor-button-content-wrapper');
+		if ( elementorButtonContent ) {
+      icon.classList.add("elementor-button-link-content");
+      elementorButtonContent.insertAdjacentElement("beforeend", icon);
+      return;
+    }
 
 		link.appendChild(icon);
 	};
