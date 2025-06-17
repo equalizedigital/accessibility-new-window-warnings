@@ -59,7 +59,7 @@ Depending upon how you're adding linked icons, we understand that this can cause
 This plugin can help to make your website *more accessible* by fixing a common issue, however it alone will not make your website accessible. True accessibility requires manual and automated testing and a human being making fixes in the website. While problems can be resolved with an automated tool such as this, not all accessibility problems can be identified automatically. [Learn more about how to test your website for accessibility errors](https://equalizedigital.com/accessibility-checker/how-to-manually-check-your-website-for-accessibility/)
 
 = How can I report security bugs? =
-You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.]( https://patchstack.com/database/vdp/9e5fbe43-0b93-4c4a-8624-6595016bf49d )
+You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team helps validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/9e5fbe43-0b93-4c4a-8624-6595016bf49d)
 
 == Screenshots ==
 
