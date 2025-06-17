@@ -76,6 +76,10 @@ If you would like to contribute a translation to this plugin, please [contact us
 
 == Changelog ==
 
+= 1.2.0 =
+* Added - improved placement of external link icons for Elementor button links
+* Updated - CSS to vertically align external link icons within Elementor button links for better visual appearance
+
 = 1.1.0 =
 * Fixed - tooltips can now be dismissed using the Escape key, ensuring better accessibility
 * Fixed - tooltip content is now hoverable, preventing accidental dismissal
