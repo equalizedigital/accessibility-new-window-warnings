@@ -13,6 +13,10 @@
  * @package ANWW
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly.
+}
+
 define( 'ANWW_VERSION', '1.2.0' );
 define( 'ANWW_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'ANWW_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
