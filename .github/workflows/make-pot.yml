@@ -40,7 +40,9 @@ jobs:
         run: |
           curl -O https://wordpress.org/latest.tar.gz
           tar -xzf latest.tar.gz
-          cp -r ${{ github.workspace }} wordpress/wp-content/plugins/accessibility-new-window-warnings
+          rsync -a --exclude='wordpress' --exclude='latest.tar.gz' \
+            ${{ github.workspace }}/ \
+            wordpress/wp-content/plugins/accessibility-new-window-warnings/
           cp wordpress/wp-config-sample.php wordpress/wp-config.php
           sed -i \
             -e "s/database_name_here/wordpress/" \
