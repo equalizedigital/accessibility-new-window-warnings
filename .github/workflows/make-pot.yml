@@ -56,10 +56,14 @@ jobs:
         run: |
           for i in {1..30}; do
             if mysqladmin ping -h127.0.0.1 -uroot -proot --silent; then
-              break
+              echo "MySQL is ready."
+              exit 0
             fi
+            echo "Waiting for MySQL... attempt $i/30"
             sleep 2
           done
+          echo "MySQL did not become ready in time." >&2
+          exit 1
 
       - name: Install WordPress
         run: |
