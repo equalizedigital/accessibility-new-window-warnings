@@ -1,0 +1,23 @@
+{
+  "name": "accessibility-new-window-warnings",
+  "version": "1.2.0",
+  "description": "Adds warnings to links that open in a new window.",
+  "license": "GPL-2.0+",
+  "scripts": {
+    "build": "webpack --mode production",
+    "dev": "webpack --mode development",
+    "dev:watch": "webpack --watch --mode development"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.22.1",
+    "@babel/preset-env": "^7.22.4",
+    "babel-loader": "^9.1.2",
+    "css-loader": "^6.8.1",
+    "css-minimizer-webpack-plugin": "^5.0.0",
+    "mini-css-extract-plugin": "^2.7.6",
+    "terser-webpack-plugin": "^5.3.10",
+    "webpack": "^5.96.1",
+    "webpack-cli": "^5.1.1",
+    "webpack-remove-empty-scripts": "^1.1.1"
+  }
+}
