@@ -1,6 +1,6 @@
 <?php
 
-namespace Accessibility_New_Window_Warnings;
+namespace EqualizeDigital\AccessibilityNewWindowWarnings;
 
 /**
  * ANWW Class

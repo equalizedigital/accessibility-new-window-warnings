@@ -13,13 +13,13 @@
  * @package ANWW
  */
 
-use Accessibility_New_Window_Warnings\ANWW;
+use EqualizeDigital\AccessibilityNewWindowWarnings\ANWW;
 
 const ANWW_VERSION = '1.2.0';
 define( 'ANWW_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'ANWW_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
-if ( ! class_exists( 'ANWW' ) ) {
+if ( ! class_exists( '\EqualizeDigital\AccessibilityNewWindowWarnings\ANWW' ) ) {
 	require_once ANWW_PLUGIN_DIR . 'includes/ANNW.php';
 }
 
