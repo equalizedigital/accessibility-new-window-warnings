@@ -6,7 +6,8 @@
   "scripts": {
     "build": "webpack --mode production",
     "dev": "webpack --mode development",
-    "dev:watch": "webpack --watch --mode development"
+    "dev:watch": "webpack --watch --mode development",
+    "dist": "npm run build && ./scripts/dist.sh"
   },
   "devDependencies": {
     "@babel/core": "^7.22.1",
