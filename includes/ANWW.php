@@ -2,6 +2,10 @@
 
 namespace EqualizeDigital\AccessibilityNewWindowWarnings;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * ANWW Class
  *
