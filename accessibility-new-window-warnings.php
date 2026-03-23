@@ -20,7 +20,7 @@ define( 'ANWW_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'ANWW_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
 if ( ! class_exists( '\EqualizeDigital\AccessibilityNewWindowWarnings\ANWW' ) ) {
-	require_once ANWW_PLUGIN_DIR . 'includes/ANNW.php';
+	require_once ANWW_PLUGIN_DIR . 'includes/ANWW.php';
 }
 
 // instantiate the plugin class.
