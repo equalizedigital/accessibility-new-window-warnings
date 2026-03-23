@@ -40,8 +40,8 @@ class ANWW {
 	 * Hooks are added to 'wp_enqueue_scripts'
 	 */
 	public function setup_actions() {
-		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
-		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles' ) );
+		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
+		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_styles' ] );
 	}
 
 	/**
@@ -49,7 +49,7 @@ class ANWW {
 	 * Stylesheet is located at the plugin's assets directory.
 	 */
 	public function enqueue_styles() {
-		wp_enqueue_style( 'anww', ANWW_PLUGIN_URL . 'assets/css/accessibility-new-window-warnings-min.css', array(), ANWW_VERSION, 'all' );
+		wp_enqueue_style( 'anww', ANWW_PLUGIN_URL . 'assets/css/accessibility-new-window-warnings-min.css', [], ANWW_VERSION, 'all' );
 	}
 
 	/**
@@ -57,12 +57,12 @@ class ANWW {
 	 * JS file is located at the plugin's assets directory.
 	 */
 	public function enqueue_scripts() {
-		wp_enqueue_script( 'anww', ANWW_PLUGIN_URL . 'assets/js/accessibility-new-window-warnings-min.js', array( 'jquery' ), ANWW_VERSION, true );
+		wp_enqueue_script( 'anww', ANWW_PLUGIN_URL . 'assets/js/accessibility-new-window-warnings-min.js', [ 'jquery' ], ANWW_VERSION, true );
 
 		// Localize the script with new data.
-		$translation_array = array(
+		$translation_array = [
 			'opens_a_new_window' => __( 'opens a new window', 'accessibility-new-window-warnings' ),
-		);
+		];
 		wp_localize_script( 'anww', 'anww_localized', $translation_array );
 	}
 }
