@@ -57,7 +57,7 @@ class ANWW {
 	 * JS file is located at the plugin's assets directory.
 	 */
 	public function enqueue_scripts() {
-		wp_enqueue_script( 'anww', ANWW_PLUGIN_URL . 'assets/js/accessibility-new-window-warnings-min.js', [ 'jquery' ], ANWW_VERSION, true );
+		wp_enqueue_script( 'anww', ANWW_PLUGIN_URL . 'assets/js/accessibility-new-window-warnings-min.js', [], ANWW_VERSION, true );
 
 		// Localize the script with new data.
 		wp_localize_script(
