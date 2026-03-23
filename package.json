@@ -7,7 +7,10 @@
     "build": "webpack --mode production",
     "dev": "webpack --mode development",
     "dev:watch": "webpack --watch --mode development",
-    "dist": "npm run build && ./scripts/dist.sh"
+    "dist": "npm run build && ./scripts/dist.sh",
+    "release:patch": "./scripts/create-release.sh patch",
+    "release:minor": "./scripts/create-release.sh minor",
+    "release:major": "./scripts/create-release.sh major"
   },
   "devDependencies": {
     "@babel/core": "^7.22.1",
