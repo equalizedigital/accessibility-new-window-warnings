@@ -60,9 +60,13 @@ class ANWW {
 		wp_enqueue_script( 'anww', ANWW_PLUGIN_URL . 'assets/js/accessibility-new-window-warnings-min.js', [ 'jquery' ], ANWW_VERSION, true );
 
 		// Localize the script with new data.
-		$translation_array = [
-			'opens_a_new_window' => __( 'opens a new window', 'accessibility-new-window-warnings' ),
-		];
-		wp_localize_script( 'anww', 'anww_localized', $translation_array );
+		wp_localize_script(
+			'anww',
+			'anww_localized',
+			[
+				'classPrefix'     => 'anww',
+				'localizedString' => __( 'opens a new window', 'accessibility-new-window-warnings' ),
+			]
+		);
 	}
 }
