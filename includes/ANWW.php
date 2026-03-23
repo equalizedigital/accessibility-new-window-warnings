@@ -35,7 +35,7 @@ class ANWW {
 	 * ANWW constructor.
 	 * Sets up hooks for enqueuing styles and scripts
 	 */
-	public function __construct() {
+	private function __construct() {
 		$this->setup_actions();
 	}
 
