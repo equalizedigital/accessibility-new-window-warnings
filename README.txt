@@ -75,6 +75,12 @@ The Accessibility New Window Warnings plugin is ready for localization. We have 
 If you would like to contribute a translation to this plugin, please [contact us](https://equalizedigital.com/contact/) or [fork the repository on GitHub](https://github.com/equalizedigital/accessibility-new-window-warnings).
 
 == Changelog ==
+= 1.3.0 =
+* Added - support for modifier classes to prevent the icon or the tooltip showing
+* Added - translation support for the strings in the plugin
+* Fixed - potential overspill in tooltip when different languages are used
+* Updated - tested up to version 7.0
+* Refactored - synced the code from the Accessibility Checker fix for the same plugin into this plugin.
 
 = 1.2.0 =
 * Added - improved placement of external link icons for Elementor button links
