@@ -1,9 +1,9 @@
 === Accessibility New Window Warnings ===
 Contributors: equalizedigital, alh0319, stevejonesdev
 Tags: accessibility, accessible, wcag, ada, a11y, section 508, links, open new window, open new tab
-Requires at least: 6.4.0
-Tested up to: 6.8.0
-Stable tag: 1.2.0
+Requires at least: 6.7.0
+Tested up to: 7.0
+Stable tag: 1.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -12,7 +12,7 @@ Make links that open in a new window compliant with WCAG guidelines for accessib
 
 == Description ==
 
-Web Content Accessibility Guidelines (WCAG) Success Criterion 3.2 (Predictable) specifies that web pages should appear and operate in predictable ways. It is a common practice to set links that go to off-site locations to open in a new window or tab when clicked. Opening new windows or tabs automatically when a link is activated can be disorienting for people who have difficulty perceiving visual content, and for some people with cognitive disabilities, if they are not warned in advance. 
+Web Content Accessibility Guidelines (WCAG) Success Criterion 3.2 (Predictable) specifies that web pages should appear and operate in predictable ways. It is a common practice to set links that go to off-site locations to open in a new window or tab when clicked. Opening new windows or tabs automatically when a link is activated can be disorienting for people who have difficulty perceiving visual content, and for some people with cognitive disabilities, if they are not warned in advance.
 
 This plugin helps websites become more accessible and better meet WCAG guidelines for predicability by providing advanced warning if a link is going to open a new window or tab before the user clicks or activates it. Providing a warning allows the user to decide it they want to leave the current window, and the warning will help them find their way back, if they do decide they would like to go to the new window. It will help them understand that the "back" button will not work and that they have to return to the last window they had open, in order to find their previous location.
 
@@ -23,13 +23,13 @@ There are no settings in this plugin. Simply activate it and it will automatical
 
 Please note: new window warnings will be added to links and links that have been styled to look like buttons, including social media sharing and link icons. Depending upon what third party plugins are adding links to your site that open in new windows, some CSS styling may be required.
 
-In addition to adding warnings for your users, this plugin integrates with the **[Accessibility Checker plugin](https://wordpress.org/plugins/accessibility-checker/)**; when Accessibility New Window Warnings is activated, it will automatically clear all "[Link Opens New Window or Tab](https://equalizedigital.com/accessibility-checker/link-opens-new-window-or-tab/)" warnings in Accessibility Checker scans of your website. Installing and activating this plugin is a great way to quickly remediate and remove a lot of open issues across you entire website.  
+In addition to adding warnings for your users, this plugin integrates with the **[Accessibility Checker plugin](https://wordpress.org/plugins/accessibility-checker/)**; when Accessibility New Window Warnings is activated, it will automatically clear all "[Link Opens New Window or Tab](https://equalizedigital.com/accessibility-checker/link-opens-new-window-or-tab/)" warnings in Accessibility Checker scans of your website. Installing and activating this plugin is a great way to quickly remediate and remove a lot of open issues across you entire website.
 
 The Accessibility New Window Warnings plugin is inspired by [Techniques for WCAG 2.0 G201: Giving users advanced warning when opening a new window](https://www.w3.org/TR/WCAG20-TECHS/G201.html).
 
 == Installation ==
 
-Getting started with Accessibility New Window Warnings is as easy as installing and activating the plugin. There are no settings to configure, it just works!  
+Getting started with Accessibility New Window Warnings is as easy as installing and activating the plugin. There are no settings to configure, it just works!
 
 ### Installing Accessibility New Window Warnings Within WordPress
 1. Visit the plugins page within your dashboard and select ‘Add New’.
@@ -51,7 +51,7 @@ The plugin looks for `target="_blank"` in your links. If `target="_blank"` is pr
 Yes. No matter how you're creating your content, this plugin will work. It uses javascript to identify the links and fix them as the page is rendered so it doesn't matter what tool you used to build out your content.
 
 = The plugin adds new window icons to my social media icons and I don't like how it looks!? =
-When it comes to accessibility, warning users about links opening in new tabs or windows applies to all links, not just links in your body text. Adding the visible icon is important for users with cognative disabilities or mobility challenges so they are warned about the new window before clicking on or activating links - it's not sufficient to just add screen reader text for blind and visually imparied users. 
+When it comes to accessibility, warning users about links opening in new tabs or windows applies to all links, not just links in your body text. Adding the visible icon is important for users with cognative disabilities or mobility challenges so they are warned about the new window before clicking on or activating links - it's not sufficient to just add screen reader text for blind and visually imparied users.
 
 Depending upon how you're adding linked icons, we understand that this can cause a less than ideal appearance. If you don't like how the visible icon appears you have a couple of options: either change the link to not open in a new window or change the design of your social media or icon buttons either with that plugin's settings or custom CSS. It's generally not considered correct to hide the visible icon.
 
@@ -75,6 +75,12 @@ The Accessibility New Window Warnings plugin is ready for localization. We have 
 If you would like to contribute a translation to this plugin, please [contact us](https://equalizedigital.com/contact/) or [fork the repository on GitHub](https://github.com/equalizedigital/accessibility-new-window-warnings).
 
 == Changelog ==
+= 1.3.0 =
+* Added - support for modifier classes to prevent the icon or the tooltip showing
+* Added - translation support for the strings in the plugin
+* Fixed - potential overspill in tooltip when different languages are used
+* Updated - tested up to version 7.0
+* Refactored - synced the code from the Accessibility Checker fix for the same plugin into this plugin.
 
 = 1.2.0 =
 * Added - improved placement of external link icons for Elementor button links

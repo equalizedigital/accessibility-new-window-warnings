@@ -1,0 +1,9 @@
+source_locale: en
+files:
+  - file: languages/accessibility-new-window-warnings.pot
+    output: languages/accessibility-new-window-warnings-{{lang}}.po
+    additional_translation_files:
+      - type: mo
+        path: languages/accessibility-new-window-warnings-{{lang}}.mo
+      - type: wp
+        path: languages/accessibility-new-window-warnings-{{lang}}.json
