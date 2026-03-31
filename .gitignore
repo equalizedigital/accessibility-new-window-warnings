@@ -11,6 +11,7 @@ dev_log.txt
 *.Trashes
 prepros-6.config
 /vendor/
+/node_modules/
 
 # Dist directory
 /dist/
