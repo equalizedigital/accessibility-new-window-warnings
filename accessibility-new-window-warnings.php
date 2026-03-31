@@ -13,17 +13,13 @@
  * @package ANWW
  */
 
-<<<<<<< patch-1
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly.
-}
-
-define( 'ANWW_VERSION', '1.2.0' );
-=======
 use EqualizeDigital\AccessibilityNewWindowWarnings\ANWW;
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 const ANWW_VERSION = '1.2.0';
->>>>>>> develop
 define( 'ANWW_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'ANWW_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 
