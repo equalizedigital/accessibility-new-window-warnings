@@ -123,6 +123,7 @@ jobs:
           fi
 
           PLAYGROUND_URL=$(python3 - <<'PY'
+          import base64
           import json
           import os
           import urllib.parse
@@ -143,8 +144,10 @@ jobs:
               ],
           }
 
-          encoded = urllib.parse.quote(json.dumps(blueprint, separators=(",", ":")), safe="")
-          print(f"https://playground.wordpress.net/?blueprint={encoded}")
+          blueprint_json = json.dumps(blueprint, separators=(",", ":"))
+          data_uri = "data:application/json;base64," + base64.b64encode(blueprint_json.encode("utf-8")).decode("ascii")
+          encoded_blueprint_url = urllib.parse.quote(data_uri, safe="")
+          print(f"https://playground.wordpress.net/?blueprint-url={encoded_blueprint_url}")
           PY
           )
 
