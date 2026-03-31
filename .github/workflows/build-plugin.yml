@@ -98,6 +98,59 @@ jobs:
           path: ${{ env.ZIP_FOLDER }}
           if-no-files-found: error
 
+      - name: Resolve public plugin URL for Playground
+        id: playground-zip
+        if: github.event.repository.private == false
+        run: |
+          if [ "${{ github.event_name }}" = "release" ]; then
+            PLUGIN_ZIP_URL="https://github.com/${GITHUB_REPOSITORY}/releases/download/${{ github.event.release.tag_name }}/${ZIP_NAME}"
+          else
+            # nightly.link exposes workflow artifacts for public repositories.
+            PLUGIN_ZIP_URL="https://nightly.link/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}/${ZIP_NAME_NO_EXT}.zip"
+          fi
+
+          echo "plugin_zip_url=$PLUGIN_ZIP_URL" >> "$GITHUB_OUTPUT"
+          echo "Plugin zip URL for Playground: $PLUGIN_ZIP_URL"
+
+      - name: Build WordPress Playground link
+        if: github.event.repository.private == false
+        run: |
+          export PLUGIN_ZIP_URL='${{ steps.playground-zip.outputs.plugin_zip_url }}'
+
+          if [ -z "$PLUGIN_ZIP_URL" ]; then
+            echo "No public plugin ZIP URL found; skipping Playground link generation."
+            exit 0
+          fi
+
+          PLAYGROUND_URL=$(python3 - <<'PY'
+          import json
+          import os
+          import urllib.parse
+
+          plugin_url = os.environ["PLUGIN_ZIP_URL"]
+          blueprint = {
+              "landingPage": "/wp-admin/plugins.php",
+              "steps": [
+                  {"step": "login"},
+                  {
+                      "step": "installPlugin",
+                      "pluginZipFile": {"resource": "url", "url": plugin_url},
+                  },
+                  {
+                      "step": "activatePlugin",
+                      "pluginPath": "accessibility-new-window-warnings/accessibility-new-window-warnings.php",
+                  },
+              ],
+          }
+
+          encoded = urllib.parse.quote(json.dumps(blueprint, separators=(",", ":")), safe="")
+          print(f"https://playground.wordpress.net/?blueprint={encoded}")
+          PY
+          )
+
+          echo "PLAYGROUND_URL=$PLAYGROUND_URL" >> "$GITHUB_ENV"
+          echo "Playground URL: $PLAYGROUND_URL"
+
       - name: Upload to release
         if: github.event_name == 'release'
         uses: softprops/action-gh-release@v2
@@ -128,7 +181,12 @@ jobs:
               ? `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${runId}/artifacts/${artifact.id}`
               : runUrl;
 
-            const body = `✅ Accessibility New Window Warnings build\n\n- **Artifact**: [Download ${zipName}.zip](${downloadUrl})\n- **Workflow run**: [View logs](${runUrl})`;
+            const playgroundUrl = process.env.PLAYGROUND_URL;
+            const playgroundLine = playgroundUrl
+              ? `\n- **Playground**: [Open with plugin preinstalled](${playgroundUrl})`
+              : `\n- **Playground**: Not available for this run (repository may be private or plugin ZIP URL is not publicly accessible).`;
+
+            const body = `✅ Accessibility New Window Warnings build\n\n- **Artifact**: [Download ${zipName}.zip](${downloadUrl})\n- **Workflow run**: [View logs](${runUrl})${playgroundLine}`;
             await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -159,6 +217,11 @@ jobs:
           echo "=== Build Summary ==="
           echo "Event: $GITHUB_EVENT_NAME"
           echo "Zip: ${{ env.ZIP_PATH }}"
+          if [ -n "${PLAYGROUND_URL}" ]; then
+            echo "Playground: ${PLAYGROUND_URL}"
+          else
+            echo "Playground: skipped (repo is private or URL unavailable)"
+          fi
           if [ "${{ github.event_name }}" = "release" ]; then
             echo "Uploaded to release: ${{ github.event.release.html_url }}"
           fi
