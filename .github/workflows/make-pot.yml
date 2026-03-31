@@ -81,8 +81,8 @@ jobs:
         run: |
           if [ -f wordpress/wp-content/plugins/accessibility-new-window-warnings/languages/accessibility-new-window-warnings.pot ] && [ -f ${{ github.workspace }}/languages/accessibility-new-window-warnings.pot ]; then
             diff_output=$(diff \
-              <(grep -vE '^("?(POT-Creation-Date|PO-Revision-Date|X-Generator|Project-Id-Version):|#|$)' wordpress/wp-content/plugins/accessibility-new-window-warnings/languages/accessibility-new-window-warnings.pot) \
-              <(grep -vE '^("?(POT-Creation-Date|PO-Revision-Date|X-Generator|Project-Id-Version):|#|$)' ${{ github.workspace }}/languages/accessibility-new-window-warnings.pot) || true)
+              <(grep -vE '^("?(POT-Creation-Date|PO-Revision-Date|X-Generator|Project-Id-Version):|# |$)' wordpress/wp-content/plugins/accessibility-new-window-warnings/languages/accessibility-new-window-warnings.pot) \
+              <(grep -vE '^("?(POT-Creation-Date|PO-Revision-Date|X-Generator|Project-Id-Version):|# |$)' ${{ github.workspace }}/languages/accessibility-new-window-warnings.pot) || true)
             if [ -n "$diff_output" ]; then
               echo "pot_changed=true" >> $GITHUB_OUTPUT
             else
