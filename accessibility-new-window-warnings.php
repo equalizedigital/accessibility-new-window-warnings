@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Accessibility New Window Warnings
- * Plugin URI:  https://equalizedigital.com/accessibility-checker
+ * Plugin URI:  https://equalizedigital.com
  * Description: Make links that open in a new window accessible by adding a warning.
  * Version:     1.3.0
  * Author:      Equalize Digital
