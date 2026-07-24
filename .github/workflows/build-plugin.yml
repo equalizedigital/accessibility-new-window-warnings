@@ -75,6 +75,14 @@ jobs:
           echo "Short commit hash: $SHORT_SHA"
 
       - name: Build dist zip
+        env:
+          # VERSION comes from the plugin's own `Version:` header, which is part
+          # of the PR diff and so attacker-controlled on a fork PR. A ${{ }}
+          # splice lands in the script text before bash parses it, making a
+          # crafted version string executable; via env: it stays inert data.
+          VERSION: ${{ steps.version.outputs.version }}
+          SHORT_SHA: ${{ steps.version.outputs.short_sha }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
           npm run dist
           ZIP_PATH=$(ls -1 dist/*.zip 2>/dev/null | head -n 1 || true)
@@ -84,11 +92,8 @@ jobs:
           fi
           mkdir -p builds
 
-          VERSION="${{ steps.version.outputs.version }}"
-          SHORT_SHA="${{ steps.version.outputs.short_sha }}"
-
           if [ "${{ github.event_name }}" = "pull_request" ]; then
-            ZIP_NAME="accessibility-new-window-warnings-${VERSION}-${{ github.event.pull_request.number }}-${SHORT_SHA}.zip"
+            ZIP_NAME="accessibility-new-window-warnings-${VERSION}-${PR_NUMBER}-${SHORT_SHA}.zip"
           elif [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             ZIP_NAME="accessibility-new-window-warnings-${VERSION}-${SHORT_SHA}.zip"
           elif [ "${{ github.event_name }}" = "release" ]; then
