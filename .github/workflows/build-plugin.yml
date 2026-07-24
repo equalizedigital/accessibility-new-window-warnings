@@ -167,10 +167,15 @@ jobs:
       - name: Summary
         env:
           PLAYGROUND_URL: ${{ steps.playground.outputs.playground-url }}
+          # ZIP_PATH contains the plugin's own `Version:` header, which is part of
+          # the PR diff and so attacker-controlled on a fork PR. A ${{ }} splice
+          # lands in the script text before bash parses it, making a crafted
+          # version string executable; via env: it stays inert data.
+          ZIP_PATH: ${{ env.ZIP_PATH }}
         run: |
           echo "=== Build Summary ==="
           echo "Event: $GITHUB_EVENT_NAME"
-          echo "Zip: ${{ env.ZIP_PATH }}"
+          echo "Zip: ${ZIP_PATH}"
           if [ -n "${PLAYGROUND_URL:-}" ]; then
             echo "Playground: ${PLAYGROUND_URL}"
           else
