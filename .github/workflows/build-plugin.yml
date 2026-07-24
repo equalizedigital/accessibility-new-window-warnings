@@ -10,6 +10,7 @@ on:
 permissions:
   contents: write
   pull-requests: write
+  actions: read          # wordpress-playground-action verifies the artifact exists before linking
 
 jobs:
   build-plugin:
@@ -51,15 +52,37 @@ jobs:
 
       - name: Extract plugin version and commit hash
         id: version
+        env:
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
         run: |
           VERSION=$(grep "Version:" accessibility-new-window-warnings.php | head -1 | sed 's/.*Version:[[:space:]]*\([^ ]*\).*/\1/')
-          SHORT_SHA=$(git rev-parse --short HEAD)
+
+          # On a pull_request, actions/checkout builds the ephemeral
+          # refs/pull/N/merge commit, so `git rev-parse HEAD` is a SHA that does
+          # not appear in the PR's commit list and means nothing to a reviewer.
+          # Use head.sha there so the artifact filename, the build comment and
+          # the PR's commit list all agree on one SHA.
+          if [ -n "${HEAD_SHA}" ]; then
+            SHORT_SHA="${HEAD_SHA:0:8}"
+          else
+            SHORT_SHA=$(git rev-parse --short=8 HEAD)
+          fi
+
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "short_sha=$SHORT_SHA" >> $GITHUB_OUTPUT
+          echo "built_at=$(date -u +'%Y-%m-%d %H:%M UTC')" >> $GITHUB_OUTPUT
           echo "Plugin version: $VERSION"
           echo "Short commit hash: $SHORT_SHA"
 
       - name: Build dist zip
+        env:
+          # VERSION comes from the plugin's own `Version:` header, which is part
+          # of the PR diff and so attacker-controlled on a fork PR. A ${{ }}
+          # splice lands in the script text before bash parses it, making a
+          # crafted version string executable; via env: it stays inert data.
+          VERSION: ${{ steps.version.outputs.version }}
+          SHORT_SHA: ${{ steps.version.outputs.short_sha }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
           npm run dist
           ZIP_PATH=$(ls -1 dist/*.zip 2>/dev/null | head -n 1 || true)
@@ -69,11 +92,8 @@ jobs:
           fi
           mkdir -p builds
 
-          VERSION="${{ steps.version.outputs.version }}"
-          SHORT_SHA="${{ steps.version.outputs.short_sha }}"
-
           if [ "${{ github.event_name }}" = "pull_request" ]; then
-            ZIP_NAME="accessibility-new-window-warnings-${VERSION}-${{ github.event.pull_request.number }}-${SHORT_SHA}.zip"
+            ZIP_NAME="accessibility-new-window-warnings-${VERSION}-${PR_NUMBER}-${SHORT_SHA}.zip"
           elif [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             ZIP_NAME="accessibility-new-window-warnings-${VERSION}-${SHORT_SHA}.zip"
           elif [ "${{ github.event_name }}" = "release" ]; then
@@ -98,61 +118,26 @@ jobs:
           path: ${{ env.ZIP_FOLDER }}
           if-no-files-found: error
 
-      - name: Resolve public plugin URL for Playground
-        id: playground-zip
-        if: github.event.repository.private == false
-        run: |
-          if [ "${{ github.event_name }}" = "release" ]; then
-            PLUGIN_ZIP_URL="https://github.com/${GITHUB_REPOSITORY}/releases/download/${{ github.event.release.tag_name }}/${ZIP_NAME}"
-          else
-            # nightly.link exposes workflow artifacts for public repositories.
-            PLUGIN_ZIP_URL="https://nightly.link/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}/${ZIP_NAME_NO_EXT}.zip"
-          fi
+      # Skipped on release: nightly.link serves Actions artifacts, not release assets.
+      # plugin-slug is pinned so the activation path never depends on slug inference.
+      - name: Playground link
+        id: playground
+        if: github.event_name != 'release'
+        uses: pattonwebz/wordpress-playground-action@v0
+        with:
+          artifact-name: ${{ env.ZIP_NAME_NO_EXT }}
+          plugin-slug: accessibility-new-window-warnings
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          post-comment: ${{ github.event_name == 'pull_request' }}
+          pr-number: ${{ github.event.pull_request.number }}
+          comment-template: |
+            ✅ Accessibility New Window Warnings build
 
-          echo "plugin_zip_url=$PLUGIN_ZIP_URL" >> "$GITHUB_OUTPUT"
-          echo "Plugin zip URL for Playground: $PLUGIN_ZIP_URL"
+            - **Artifact**: [Download {artifact_name}.zip]({artifact_url})
+            - **Workflow run**: [View logs]({run_url})
+            - **Playground**: [Open with plugin preinstalled]({playground_url})
 
-      - name: Build WordPress Playground link
-        if: github.event.repository.private == false
-        run: |
-          export PLUGIN_ZIP_URL='${{ steps.playground-zip.outputs.plugin_zip_url }}'
-
-          if [ -z "$PLUGIN_ZIP_URL" ]; then
-            echo "No public plugin ZIP URL found; skipping Playground link generation."
-            exit 0
-          fi
-
-          PLAYGROUND_URL=$(python3 - <<'PY'
-          import base64
-          import json
-          import os
-          import urllib.parse
-
-          plugin_url = os.environ["PLUGIN_ZIP_URL"]
-          blueprint = {
-              "landingPage": "/wp-admin/plugins.php",
-              "steps": [
-                  {"step": "login"},
-                  {
-                      "step": "installPlugin",
-                      "pluginZipFile": {"resource": "url", "url": plugin_url},
-                  },
-                  {
-                      "step": "activatePlugin",
-                      "pluginPath": "accessibility-new-window-warnings/accessibility-new-window-warnings.php",
-                  },
-              ],
-          }
-
-          blueprint_json = json.dumps(blueprint, separators=(",", ":"))
-          data_uri = "data:application/json;base64," + base64.b64encode(blueprint_json.encode("utf-8")).decode("ascii")
-          encoded_blueprint_url = urllib.parse.quote(data_uri, safe="")
-          print(f"https://playground.wordpress.net/?blueprint-url={encoded_blueprint_url}")
-          PY
-          )
-
-          echo "PLAYGROUND_URL=$PLAYGROUND_URL" >> "$GITHUB_ENV"
-          echo "Playground URL: $PLAYGROUND_URL"
+            <sub>Built from [`${{ steps.version.outputs.short_sha }}`](${{ github.server_url }}/${{ github.repository }}/pull/${{ github.event.pull_request.number }}/commits/${{ github.event.pull_request.head.sha }}) · ${{ steps.version.outputs.built_at }}</sub>
 
       - name: Upload to release
         if: github.event_name == 'release'
@@ -163,42 +148,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Comment on PR with build details
-        if: github.event_name == 'pull_request'
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const prNumber = context.payload.pull_request.number;
-            const runId = context.runId;
-            const runUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${runId}`;
-            const zipName = process.env.ZIP_NAME_NO_EXT;
-
-            const artifacts = await github.rest.actions.listWorkflowRunArtifacts({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              run_id: runId,
-            });
-
-            const artifact = artifacts.data.artifacts.find(a => a.name === zipName);
-            const downloadUrl = artifact
-              ? `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${runId}/artifacts/${artifact.id}`
-              : runUrl;
-
-            const playgroundUrl = process.env.PLAYGROUND_URL;
-            const playgroundLine = playgroundUrl
-              ? `\n- **Playground**: [Open with plugin preinstalled](${playgroundUrl})`
-              : `\n- **Playground**: Not available for this run (repository may be private or plugin ZIP URL is not publicly accessible).`;
-
-            const body = `✅ Accessibility New Window Warnings build\n\n- **Artifact**: [Download ${zipName}.zip](${downloadUrl})\n- **Workflow run**: [View logs](${runUrl})${playgroundLine}`;
-            await github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: prNumber,
-              body,
-            });
-
       - name: Remove triggering label from PR
-        if: github.event_name == 'pull_request'
+        # always(): a failed build must still drop the label. Re-adding a label
+        # that is already present emits no `labeled` event, so leaving it on
+        # would make the trigger dead until someone removed it by hand.
+        if: always() && github.event_name == 'pull_request'
         uses: actions/github-script@v7
         with:
           script: |
@@ -216,14 +170,21 @@ jobs:
             }
 
       - name: Summary
+        env:
+          PLAYGROUND_URL: ${{ steps.playground.outputs.playground-url }}
+          # ZIP_PATH contains the plugin's own `Version:` header, which is part of
+          # the PR diff and so attacker-controlled on a fork PR. A ${{ }} splice
+          # lands in the script text before bash parses it, making a crafted
+          # version string executable; via env: it stays inert data.
+          ZIP_PATH: ${{ env.ZIP_PATH }}
         run: |
           echo "=== Build Summary ==="
           echo "Event: $GITHUB_EVENT_NAME"
-          echo "Zip: ${{ env.ZIP_PATH }}"
-          if [ -n "${PLAYGROUND_URL}" ]; then
+          echo "Zip: ${ZIP_PATH}"
+          if [ -n "${PLAYGROUND_URL:-}" ]; then
             echo "Playground: ${PLAYGROUND_URL}"
           else
-            echo "Playground: skipped (repo is private or URL unavailable)"
+            echo "Playground: not built (releases ship the zip as a release asset)"
           fi
           if [ "${{ github.event_name }}" = "release" ]; then
             echo "Uploaded to release: ${{ github.event.release.html_url }}"
