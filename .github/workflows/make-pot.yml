@@ -40,8 +40,8 @@ jobs:
         run: |
           if [ -f languages/accessibility-new-window-warnings.pot ] && [ -f "${RUNNER_TEMP}/accessibility-new-window-warnings.pot.baseline" ]; then
             diff_output=$(diff \
-              <(grep -vE '^("?(POT-Creation-Date|PO-Revision-Date|X-Generator|Project-Id-Version):|# |$)' languages/accessibility-new-window-warnings.pot) \
-              <(grep -vE '^("?(POT-Creation-Date|PO-Revision-Date|X-Generator|Project-Id-Version):|# |$)' "${RUNNER_TEMP}/accessibility-new-window-warnings.pot.baseline") || true)
+              <(grep -vE '^("?(POT-Creation-Date|PO-Revision-Date|X-Generator|Project-Id-Version):|#|$)' languages/accessibility-new-window-warnings.pot) \
+              <(grep -vE '^("?(POT-Creation-Date|PO-Revision-Date|X-Generator|Project-Id-Version):|#|$)' "${RUNNER_TEMP}/accessibility-new-window-warnings.pot.baseline") || true)
             if [ -n "$diff_output" ]; then
               echo "pot_changed=true" >> $GITHUB_OUTPUT
             else
