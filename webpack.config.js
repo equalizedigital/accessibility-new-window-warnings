@@ -72,7 +72,15 @@ module.exports = [
 		],
 		optimization: {
 			minimizer: [
-				new TerserPlugin( { parallel: true } ),
+				new TerserPlugin( {
+					parallel: true,
+					terserOptions: {
+						format: {
+							// Keep `translators:` comments in the built bundles.
+							comments: /translators:/i,
+						},
+					},
+				} ),
 				new CssMinimizerPlugin(),
 			],
 		},
