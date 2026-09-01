@@ -1,9 +1,9 @@
 <?php
 /**
  * Plugin Name: Accessibility New Window Warnings
- * Plugin URI:  https://a11ychecker.com
+ * Plugin URI:  https://equalizedigital.com
  * Description: Make links that open in a new window accessible by adding a warning.
- * Version:     1.3.0
+ * Version:     1.3.1
  * Author:      Equalize Digital
  * Author URI:  https://equalizedigital.com
  * License:     GPL-2.0-or-later
@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-const ANWW_VERSION = '1.3.0';
+const ANWW_VERSION = '1.3.1';
 define( 'ANWW_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'ANWW_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 

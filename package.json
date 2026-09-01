@@ -1,6 +1,6 @@
 {
   "name": "accessibility-new-window-warnings",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "description": "Adds warnings to links that open in a new window.",
   "license": "GPL-2.0-or-later",
   "scripts": {

@@ -11,78 +11,37 @@ on:
 jobs:
   make-pot:
     runs-on: ubuntu-latest
-    services:
-      mysql:
-        image: mysql:5.7
-        env:
-          MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: wordpress
-        ports:
-          - 3306:3306
-        options: >-
-          --health-cmd="mysqladmin ping --silent" --health-interval=10s --health-timeout=5s --health-retries=3
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install PHP and required extensions
-        run: |
-          sudo apt-get update && sudo apt-get install -y php php-mysql php-xml php-curl
-          echo "xdebug.max_nesting_level=1024" | sudo tee -a /etc/php/$(php -r 'echo PHP_MAJOR_VERSION.".".PHP_MINOR_VERSION;')/cli/conf.d/20-xdebug.ini
+      # `wp i18n make-pot` is static analysis over the source tree, so it needs
+      # neither a database nor an installed WordPress. No build step either: it
+      # reads src/ directly and nothing in build/ is committed.
+      - name: Set up PHP with wp-cli
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: wp-cli
+          coverage: none
 
-      - name: Download wp-cli
-        run: |
-          curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
-          chmod +x wp-cli.phar
-          sudo mv wp-cli.phar /usr/local/bin/wp
-
-      - name: Download and configure WordPress
-        run: |
-          curl -O https://wordpress.org/latest.tar.gz
-          tar -xzf latest.tar.gz
-          rsync -a --exclude='wordpress' --exclude='latest.tar.gz' \
-            ${{ github.workspace }}/ \
-            wordpress/wp-content/plugins/accessibility-new-window-warnings/
-          cp wordpress/wp-config-sample.php wordpress/wp-config.php
-          sed -i \
-            -e "s/database_name_here/wordpress/" \
-            -e "s/username_here/root/" \
-            -e "s/password_here/root/" \
-            -e "s/'DB_HOST', 'localhost'/'DB_HOST', '127.0.0.1:3306'/" \
-            wordpress/wp-config.php
-          echo "define('FS_METHOD', 'direct');" >> wordpress/wp-config.php
-
-      - name: Wait for MySQL to be ready
-        run: |
-          for i in {1..30}; do
-            if mysqladmin ping -h127.0.0.1 -uroot -proot --silent; then
-              echo "MySQL is ready."
-              exit 0
-            fi
-            echo "Waiting for MySQL... attempt $i/30"
-            sleep 2
-          done
-          echo "MySQL did not become ready in time." >&2
-          exit 1
-
-      - name: Install WordPress
-        run: |
-          cd wordpress
-          wp core install --url=localhost --title=Test --admin_user=admin --admin_password=admin --admin_email=admin@example.com --skip-email --allow-root
-
+      # This plugin has no dist build, so the POT is generated straight into the
+      # committed languages/ folder. That file is also the baseline the next
+      # step diffs against, so it is stashed first.
       - name: Generate POT file
         run: |
-          cd wordpress/wp-content/plugins/accessibility-new-window-warnings
-          mkdir -p languages
-          wp i18n make-pot . ./languages/accessibility-new-window-warnings.pot --allow-root
+          if [ -f languages/accessibility-new-window-warnings.pot ]; then
+            cp languages/accessibility-new-window-warnings.pot "${RUNNER_TEMP}/accessibility-new-window-warnings.pot.baseline"
+          fi
+          wp i18n make-pot . languages/accessibility-new-window-warnings.pot
 
       - name: Check if POT file changed (ignoring some headers)
         id: pot_diff
         run: |
-          if [ -f wordpress/wp-content/plugins/accessibility-new-window-warnings/languages/accessibility-new-window-warnings.pot ] && [ -f ${{ github.workspace }}/languages/accessibility-new-window-warnings.pot ]; then
+          if [ -f languages/accessibility-new-window-warnings.pot ] && [ -f "${RUNNER_TEMP}/accessibility-new-window-warnings.pot.baseline" ]; then
             diff_output=$(diff \
-              <(grep -vE '^("?(POT-Creation-Date|PO-Revision-Date|X-Generator|Project-Id-Version):|# |$)' wordpress/wp-content/plugins/accessibility-new-window-warnings/languages/accessibility-new-window-warnings.pot) \
-              <(grep -vE '^("?(POT-Creation-Date|PO-Revision-Date|X-Generator|Project-Id-Version):|# |$)' ${{ github.workspace }}/languages/accessibility-new-window-warnings.pot) || true)
+              <(grep -vE '^("?(POT-Creation-Date|PO-Revision-Date|X-Generator|Project-Id-Version):|#:|$)' languages/accessibility-new-window-warnings.pot) \
+              <(grep -vE '^("?(POT-Creation-Date|PO-Revision-Date|X-Generator|Project-Id-Version):|#:|$)' "${RUNNER_TEMP}/accessibility-new-window-warnings.pot.baseline") || true)
             if [ -n "$diff_output" ]; then
               echo "pot_changed=true" >> $GITHUB_OUTPUT
             else
@@ -97,7 +56,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: accessibility-new-window-warnings-i18n
-          path: wordpress/wp-content/plugins/accessibility-new-window-warnings/languages/accessibility-new-window-warnings.pot
+          path: languages/accessibility-new-window-warnings.pot
 
       - name: Set up Git for PR
         if: steps.pot_diff.outputs.pot_changed == 'true'
@@ -105,17 +64,15 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Replace root languages folder with built one
-        if: steps.pot_diff.outputs.pot_changed == 'true'
-        run: |
-          rm -rf ${{ github.workspace }}/languages
-          cp -r wordpress/wp-content/plugins/accessibility-new-window-warnings/languages ${{ github.workspace }}/languages
-
+      # No copy-back step: the POT was generated in place. Only the .pot is
+      # committed - this previously replaced the whole languages/ directory, but
+      # the .po/.mo files in there come from the external translation system and
+      # are not this workflow's to touch.
       - name: Create or Update Pull Request with updated translations
         if: steps.pot_diff.outputs.pot_changed == 'true'
         uses: peter-evans/create-pull-request@v6
         with:
-          add-paths: ./languages
+          add-paths: ./languages/accessibility-new-window-warnings.pot
           commit-message: Update translation files (POT)
           title: Update translation files (POT)
           body: This PR updates the POT translation file generated by the workflow.
