@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-03-31T18:02:54+00:00\n"
+"POT-Creation-Date: 2026-09-01T16:15:18+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: accessibility-new-window-warnings\n"
@@ -22,9 +22,10 @@ msgid "Accessibility New Window Warnings"
 msgstr "Accessibility Checker New Window Warning"
 
 #. Plugin URI of the plugin
+#. Author URI of the plugin
 #: accessibility-new-window-warnings.php
-msgid "https://a11ychecker.com"
-msgstr "https://a11ychecker.com"
+msgid "https://equalizedigital.com"
+msgstr "https://equalizedigital.com"
 
 #. Description of the plugin
 #: accessibility-new-window-warnings.php
@@ -35,11 +36,6 @@ msgstr "Gör länkar som öppnas i ett nytt fönster tillgängliga genom att lä
 #: accessibility-new-window-warnings.php
 msgid "Equalize Digital"
 msgstr "Equalize Digital"
-
-#. Author URI of the plugin
-#: accessibility-new-window-warnings.php
-msgid "https://equalizedigital.com"
-msgstr "https://equalizedigital.com"
 
 #: includes/ANWW.php:74
 msgid "opens a new window"
