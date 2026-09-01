@@ -75,6 +75,12 @@ The Accessibility New Window Warnings plugin is ready for localization. We have 
 If you would like to contribute a translation to this plugin, please [contact us](https://equalizedigital.com/contact/) or [fork the repository on GitHub](https://github.com/equalizedigital/accessibility-new-window-warnings).
 
 == Changelog ==
+= 1.3.1 =
+* Added - re-run new window warning processing when BoardScribe re-renders its table (e.g. on pagination)
+* Added - re-run new window warning processing when Gravity Forms re-renders a form via AJAX (multi-page navigation, validation errors)
+* Fixed - accessible name calculation for links that combine an image and text, synced from the Accessibility Checker plugin
+* Updated - tested up to version 7.1
+
 = 1.3.0 =
 * Added - support for modifier classes to prevent the icon or the tooltip showing
 * Added - translation support for the strings in the plugin
