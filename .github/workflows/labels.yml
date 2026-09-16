@@ -20,7 +20,7 @@ jobs:
   sync:
     uses: equalizedigital/development-standards/.github/workflows/label-sync-reusable.yml@main
     with:
-      fragments: base,community,a11y-taxonomy
+      fragments: base,community
       plugin-name: ""
       dry-run: ${{ inputs.dry-run || false }}
     secrets:
